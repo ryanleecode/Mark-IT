@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-react",
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "quotemark": [true, "single", "jsx-double", "avoid-escape"],
+    "object-literal-sort-keys": false,
+    "jsx-boolean-value": ["never"],
+    "ordered-imports": false
+  }
+}

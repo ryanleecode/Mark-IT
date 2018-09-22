@@ -1,1 +1,1 @@
-# Typescript Web Boilerplate
+# Elevate Hackathon
