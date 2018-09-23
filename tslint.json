@@ -9,6 +9,9 @@
     "quotemark": [true, "single", "jsx-double", "avoid-escape"],
     "object-literal-sort-keys": false,
     "jsx-boolean-value": ["never"],
-    "ordered-imports": false
+    "ordered-imports": false,
+    "interface-name": false,
+    "no-submodule-imports": false,
+    "jsx-no-lambda": false
   }
 }

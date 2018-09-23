@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "elevatehackathon-20180921235941-authRole",
+            "UnauthRoleArn": "arn:aws:iam::378436968457:role/elevatehackathon-20180921235941-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::378436968457:role/elevatehackathon-20180921235941-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "elevatehackathon-20180921235941-deployment",
+            "UnauthRoleName": "elevatehackathon-20180921235941-unauthRole",
+            "StackName": "elevatehackathon-20180921235941",
+            "StackId": "arn:aws:cloudformation:us-east-2:378436968457:stack/elevatehackathon-20180921235941/eec459c0-be1b-11e8-9862-024478adc782"
+        }
+    }
+}

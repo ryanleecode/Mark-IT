@@ -5,6 +5,15 @@ import MiniCssExtractPlugin = require('mini-css-extract-plugin');
 import * as path from 'path';
 import * as webpack from 'webpack';
 import merge = require('webpack-merge');
+import * as dotenv from 'dotenv';
+
+const env = dotenv.config().parsed;
+
+// reduce it to a nice object, the same as before
+const envKeys = Object.keys(env as any).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify((env as any)[next]);
+  return prev;
+}, {});
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -44,6 +53,18 @@ const commonConfig: webpack.Configuration = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -70,6 +91,7 @@ const devConfig = merge(commonConfig, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin(envKeys),
     new HardSourceWebpackPlugin(),
   ],
 });

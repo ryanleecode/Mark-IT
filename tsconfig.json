@@ -11,7 +11,7 @@
     "pretty": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "removeComments": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
