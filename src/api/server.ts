@@ -8,15 +8,24 @@ import webpackDevMiddleware = require('webpack-dev-middleware');
 import webpackHotMiddleware = require('webpack-hot-middleware');
 import webpackConfig from '../../webpack.config';
 import history = require('connect-history-api-fallback');
-import { default as analyticsRouter } from './analyticsRouter';
+import { filterRouter, default as analyticsRouter } from './analyticsRouter';
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(compress());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+  next();
+});
 
-app.use('/api/analytics', analyticsRouter);
+app.use('/api/analytics/', analyticsRouter);
+app.use('/api/filter', filterRouter);
 
 const { path: outputPath, publicPath } = webpackConfig.output!;
 if (process.env.NODE_ENV === 'development') {

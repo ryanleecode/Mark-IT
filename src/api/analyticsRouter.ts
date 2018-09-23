@@ -1,7 +1,13 @@
 import { Router } from 'express';
 import jsonfile = require('jsonfile');
-import { GetAnalyticsRequest } from './request';
+import { GetAnalyticsRequest, GetFilterRequest } from './request';
 import { AggregateData, DayData } from './data';
+import { filterRegions } from './filter';
+
+const readSampleDataFile = async () =>
+  ((await jsonfile.readFile(
+    `${__dirname}/data/sample_data.json`,
+  )) as any) as AggregateData[];
 
 const addDayData = (x: DayData, y: DayData): DayData => {
   const newDayData = x;
@@ -24,6 +30,28 @@ const router = Router();
 
 const isLatLngInBounds = (lat: number, lng: number, x: AggregateData) =>
   lat < x.max_lat && lat > x.min_lat && lng < x.max_lon && lng > x.min_lon;
+
+export const filterRouter = Router();
+
+filterRouter.get('/', async (req: GetFilterRequest, res) => {
+  const { age } = req.headers;
+  try {
+    const data = await readSampleDataFile();
+    // console.log(data);
+    const filteredData = filterRegions(data, { age });
+
+    res.send({
+      hasErrors: false,
+      payload: {
+        result: filteredData,
+      },
+      errors: [],
+    });
+    return;
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 router.get('/', async (req: GetAnalyticsRequest, res) => {
   const file = `${__dirname}/data/sample_data.json`;

@@ -4,110 +4,25 @@ import {
   CoffeeIconButton,
   LocationMarker,
   TransactionGraph,
+  DemographicsGraph,
 } from '../components';
-import { Grid, Tabs, Tab } from '@material-ui/core';
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
+import {
+  Grid,
+  Tabs,
+  Tab,
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Typography,
+  TextField,
+} from '@material-ui/core';
 import { ResponsiveLine } from '@nivo/line';
 import axios from 'axios';
 import { AggregateData } from '../../api/data';
-
-const generateChartData = (data: AggregateData | null) => {
-  if (!data) {
-    return null;
-  }
-  const newData = [
-    {
-      id: 'Analytics',
-      color: 'hsl(175, 54%, 48%)',
-      data: [
-        {
-          x: 'mm',
-          y: data.Monday.morning,
-        },
-        {
-          x: 'ma',
-          y: data.Monday.noon,
-        },
-        {
-          x: 'me',
-          y: data.Monday.evening,
-        },
-        {
-          x: 'tm',
-          y: data.Tuesday.morning,
-        },
-        {
-          x: 'tn',
-          y: data.Tuesday.noon,
-        },
-        {
-          x: 'te',
-          y: data.Tuesday.evening,
-        },
-        {
-          x: 'wm',
-          y: data.Wednesday.morning,
-        },
-        {
-          x: 'wn',
-          y: data.Wednesday.noon,
-        },
-        {
-          x: 'we',
-          y: data.Wednesday.evening,
-        },
-        {
-          x: 'Tm',
-          y: data.Thursday.morning,
-        },
-        {
-          x: 'Tn',
-          y: data.Thursday.noon,
-        },
-        {
-          x: 'Te',
-          y: data.Thursday.evening,
-        },
-        {
-          x: 'fm',
-          y: data.Friday.morning,
-        },
-        {
-          x: 'fn',
-          y: data.Friday.noon,
-        },
-        {
-          x: 'fe',
-          y: data.Friday.evening,
-        },
-        {
-          x: 'sm',
-          y: data.Saturday.morning,
-        },
-        {
-          x: 'sn',
-          y: data.Saturday.noon,
-        },
-        {
-          x: 'se',
-          y: data.Saturday.evening,
-        },
-        {
-          x: 'Sm',
-          y: data.Sunday.morning,
-        },
-        {
-          x: 'Sn',
-          y: data.Sunday.noon,
-        },
-        {
-          x: 'Se',
-          y: data.Sunday.evening,
-        },
-      ],
-    },
-  ];
-  return newData;
-};
+import { generateTrafficData, generateDemographicsData } from '../util';
+import { AnalyticsFilter } from '../../api';
 
 const arrayAverage = (arr: number[]) =>
   arr.reduce((total, num) => total + num) / arr.length;
@@ -122,6 +37,13 @@ interface Props {
   zoom: number;
 }
 
+interface HighlightFrame {
+  bottomLeft: number;
+  topLeft: number;
+  topRight: number;
+  bottomRight: number;
+}
+
 interface State {
   location: {
     lat: number;
@@ -129,6 +51,9 @@ interface State {
   };
   tabIndex: number;
   data: AggregateData | null;
+  age: number | null;
+  frames: google.maps.Polygon[];
+  googleMap: any;
 }
 
 class GraphPage extends React.Component<Props, State> {
@@ -145,9 +70,13 @@ class GraphPage extends React.Component<Props, State> {
       },
       tabIndex: 0,
       data: null,
+      age: null,
+      frames: [],
+      googleMap: null,
     };
 
     this.getAnalytics = this.getAnalytics.bind(this);
+    this.getFilters = this.getFilters.bind(this);
   }
 
   public async getAnalytics(lat: number, lng: number) {
@@ -161,8 +90,20 @@ class GraphPage extends React.Component<Props, State> {
     this.setState({ data: result });
   }
 
+  public async getFilters(filter: AnalyticsFilter) {
+    const { age } = filter;
+    const result: AggregateData[] = (await axios.get('/api/filter', {
+      headers: {
+        age,
+      },
+    })).data.payload;
+
+    return result;
+  }
+
   public render() {
     const {
+      age,
       data,
       tabIndex,
       location: { lat, lng },
@@ -184,17 +125,73 @@ class GraphPage extends React.Component<Props, State> {
     return (
       <Grid container>
         <Grid item xs={5}>
+          <ExpansionPanel
+            style={{
+              position: 'absolute',
+              zIndex: 1000,
+              left: '1em',
+              top: '6em',
+              width: '40vh',
+            }}
+          >
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="title">Filter</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <TextField
+                id="standard-number"
+                label="Age"
+                value={age || undefined}
+                onChange={async () => {
+                  const filteredAreas = ((await this.getFilters({
+                    age: age || undefined,
+                  })) as any).result;
+
+                  const polygons = filteredAreas.map((x) => {
+                    const coordinates = [
+                      { lat: x.min_lat, lng: x.min_lon },
+                      { lat: x.min_lat, lng: x.max_lon },
+                      { lat: x.min_lon, lng: x.min_lat },
+                      { lat: x.min_lon, lng: x.max_lat },
+                    ];
+                    return new this.state.googleMap.maps.Polygon({
+                      map: this.state.googleMap.map,
+                      paths: coordinates,
+                      strokeColor: '#0000FF',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 2,
+                      fillColor: '#0000FF',
+                      fillOpacity: 0.35,
+                      draggable: true,
+                      editable: true,
+                      geodesic: false,
+                    });
+                  });
+                  this.setState({ age, frames: polygons });
+                }}
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                margin="normal"
+              />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
           <div style={{ height: '85vh', width: '100%' }}>
             <GoogleMapReact
               onClick={({ x, y, lat: newLat, lng: newLng }) => {
                 this.getAnalytics(lat, lng);
                 this.setState({ location: { lat: newLat, lng: newLng } });
               }}
+              onGoogleApiLoaded={(map) => this.setState({ googleMap: map })}
               defaultCenter={{
                 lat: arrayAverage(dataPoints.map((x) => x.lat)),
                 lng: arrayAverage(dataPoints.map((x) => x.lng)),
               }}
+              yesIWantToUseGoogleMapApiInternals
               bootstrapURLKeys={{
+                libraries: 'places',
                 key: process.env.GOOGLE_MAPS_API_KEY as string,
               }}
               defaultZoom={this.props.zoom}
@@ -214,6 +211,7 @@ class GraphPage extends React.Component<Props, State> {
           <div
             style={{ height: '85vh', marginLeft: '1em', marginRight: '1em' }}
           >
+            <Divider style={{ marginTop: '1em' }} />
             <Tabs
               value={tabIndex}
               onChange={(_, value) => this.setState({ tabIndex: value })}
@@ -225,12 +223,21 @@ class GraphPage extends React.Component<Props, State> {
               <Tab label="Traffic" />
               <Tab label="Demographics" />
             </Tabs>
+            <Divider />
             {(() => {
               switch (tabIndex) {
                 case 0:
                   return (
-                    <TransactionGraph chartData={generateChartData(data)} />
+                    <TransactionGraph chartData={generateTrafficData(data)} />
                   );
+                  break;
+                case 1:
+                  return (
+                    <DemographicsGraph
+                      chartData={generateDemographicsData(data)}
+                    />
+                  );
+                  break;
                 default:
                   return null;
               }
