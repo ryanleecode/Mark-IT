@@ -1,12 +1,6 @@
 {
-    "identityPoolName": "cognito67d3fa30_identitypool_67d3fa30",
-    "allowUnauthenticatedIdentities": false,
-    "thirdPartyAuth": false,
-    "lambdaLogPolicy": "cognito67d3fa30_lambda_log_policy",
-    "openIdLambdaRoleName": "cognito67d3fa30_openid_lambda_role",
-    "openIdRolePolicy": "cognito67d3fa30_openid_pass_role_policy",
-    "openIdLambdaIAMPolicy": "cognito67d3fa30_openid_lambda_iam_policy",
-    "openIdLogPolicy": "cognito67d3fa30_openid_lambda_log_policy",
+    "resourceName": "cognito67d3fa30",
+    "authSelections": "identityPoolAndUserPool",
     "userPoolName": "cognito67d3fa30_userpool_67d3fa30",
     "autoVerifiedAttributes": [
         "email"
@@ -47,11 +41,17 @@
     "userpoolClientLogPolicy": "cognito67d3fa30_userpoolclient_lambda_log_policy",
     "userpoolClientLambdaPolicy": "cognito67d3fa30_userpoolclient_lambda_iam_policy",
     "userpoolClientSetAttributes": false,
+    "identityPoolName": "cognito67d3fa30_identitypool_67d3fa30",
+    "allowUnauthenticatedIdentities": false,
+    "thirdPartyAuth": false,
+    "lambdaLogPolicy": "cognito67d3fa30_lambda_log_policy",
+    "openIdLambdaRoleName": "cognito67d3fa30_openid_lambda_role",
+    "openIdRolePolicy": "cognito67d3fa30_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "cognito67d3fa30_openid_lambda_iam_policy",
+    "openIdLogPolicy": "cognito67d3fa30_openid_lambda_log_policy",
     "useDefault": "default",
     "unAuthRoleName": "elevatehackathon-20180921235941-unauthRole",
     "authRoleName": "elevatehackathon-20180921235941-authRole",
     "unAuthRoleArn": "arn:aws:iam::378436968457:role/elevatehackathon-20180921235941-unauthRole",
-    "authRoleArn": "arn:aws:iam::378436968457:role/elevatehackathon-20180921235941-authRole",
-    "resourceName": "cognito67d3fa30",
-    "authSelections": "identityPoolAndUserPool"
+    "authRoleArn": "arn:aws:iam::378436968457:role/elevatehackathon-20180921235941-authRole"
 }

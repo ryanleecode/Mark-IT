@@ -41,14 +41,11 @@ app.use(express.static('public'));
 if (process.env.NODE_ENV === 'development') {
   app.get('*', (req, res) => res.sendFile(path.resolve(publicPath!)));
 } else {
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(outputPath!, 'index.html')),
-  );
+  app.get('*', (req, res) => {
+    app.use(express.static(publicPath!));
+    res.sendFile(path.resolve(outputPath!));
+  });
 }
-
-app.get('*', (req, res) =>
-  res.sendFile(path.resolve(outputPath!, 'index.html')),
-);
 
 app.listen(port, () =>
   debug('info')(`Server is running on port http://localhost:${port}/`),
