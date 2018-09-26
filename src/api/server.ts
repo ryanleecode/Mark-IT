@@ -36,14 +36,16 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'production') {
   app.use(express.static(outputPath!));
 }
+
 app.use(express.static('public'));
 
 if (process.env.NODE_ENV === 'development') {
   app.get('*', (req, res) => res.sendFile(path.resolve(publicPath!)));
 } else {
-  app.get('*', (req, res) => {
-    app.use(express.static(publicPath!));
-    res.sendFile(path.resolve(outputPath!));
+  app.get('/*', (req, res) => {
+    app.use(express.static(outputPath!));
+    res.sendFile(path.resolve(publicPath!));
+    // res.sendFile(path.resolve(outputPath!, 'index.html'));
   });
 }
 
