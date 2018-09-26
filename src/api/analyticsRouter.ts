@@ -34,11 +34,15 @@ const isLatLngInBounds = (lat: number, lng: number, x: AggregateData) =>
 export const filterRouter = Router();
 
 filterRouter.get('/', async (req: GetFilterRequest, res) => {
-  const { age } = req.headers;
+  const age = Number(req.headers.age);
+  const { gender, income } = req.headers;
   try {
     const data = await readSampleDataFile();
-    // console.log(data);
-    const filteredData = filterRegions(data, { age });
+    const filteredData = filterRegions(data, {
+      age,
+      income: Number(income) as any,
+      gender: gender as any,
+    });
 
     res.send({
       hasErrors: false,

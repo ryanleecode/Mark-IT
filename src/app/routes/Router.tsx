@@ -10,6 +10,7 @@ const styles = ({ spacing, breakpoints }: Theme) =>
     container: {
       marginLeft: 'auto',
       marginRight: 'auto',
+      height: '70vh',
       paddingLeft: spacing.unit * 2,
       paddingRight: spacing.unit * 2,
       [breakpoints.up('lg')]: {
@@ -30,8 +31,8 @@ class Router extends React.Component<Props> {
       <main>
         <Header />
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/analytics" component={GraphPage} />
+          <Route path="/" exact component={GraphPage} />
+          {/* <Route path="/analytics" component={GraphPage} /> */}
         </Switch>
       </main>
     );

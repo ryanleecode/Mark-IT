@@ -5,7 +5,10 @@ const awsmobile =  {
     "aws_cognito_identity_pool_id": "us-east-2:687a07eb-f8fd-4ac1-9dae-5046959efb9c",
     "aws_cognito_region": "us-east-2",
     "aws_user_pools_id": "us-east-2_e7FYzcN0B",
-    "aws_user_pools_web_client_id": "6cif2t0iag0l74e3k5ttc7ol49"
+    "aws_user_pools_web_client_id": "6cif2t0iag0l74e3k5ttc7ol49",
+    "aws_content_delivery_bucket": "wingman-elevate",
+    "aws_content_delivery_bucket_region": "us-east-2",
+    "aws_content_delivery_url": "http://wingman-elevate.s3-website.us-east-2.amazonaws.com"
 };
 
 

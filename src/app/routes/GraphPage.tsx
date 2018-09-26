@@ -17,6 +17,11 @@ import {
   ExpansionPanelDetails,
   Typography,
   TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from '@material-ui/core';
 import { ResponsiveLine } from '@nivo/line';
 import axios from 'axios';
@@ -52,8 +57,16 @@ interface State {
   tabIndex: number;
   data: AggregateData | null;
   age: number | null;
+  gender: string | null;
   frames: google.maps.Polygon[];
   googleMap: any;
+  income: number | null;
+}
+
+interface FilterParam {
+  age?: number;
+  gender?: 'Male' | 'Female' | 'Other' | 'Any';
+  income?: number;
 }
 
 class GraphPage extends React.Component<Props, State> {
@@ -73,6 +86,8 @@ class GraphPage extends React.Component<Props, State> {
       age: null,
       frames: [],
       googleMap: null,
+      gender: 'Any',
+      income: null,
     };
 
     this.getAnalytics = this.getAnalytics.bind(this);
@@ -84,6 +99,7 @@ class GraphPage extends React.Component<Props, State> {
       headers: {
         lat,
         lng,
+        'Access-Control-Allow-Origin': '*',
       },
     })).data.payload.result;
 
@@ -91,10 +107,13 @@ class GraphPage extends React.Component<Props, State> {
   }
 
   public async getFilters(filter: AnalyticsFilter) {
-    const { age } = filter;
+    const { age, gender, income } = filter;
     const result: AggregateData[] = (await axios.get('/api/filter', {
       headers: {
         age,
+        gender,
+        income,
+        'Access-Control-Allow-Origin': '*',
       },
     })).data.payload;
 
@@ -104,6 +123,8 @@ class GraphPage extends React.Component<Props, State> {
   public render() {
     const {
       age,
+      gender,
+      income,
       data,
       tabIndex,
       location: { lat, lng },
@@ -124,7 +145,7 @@ class GraphPage extends React.Component<Props, State> {
     ];
     return (
       <Grid container>
-        <Grid item xs={5}>
+        <Grid item xs={6}>
           <ExpansionPanel
             style={{
               position: 'absolute',
@@ -141,33 +162,70 @@ class GraphPage extends React.Component<Props, State> {
               <TextField
                 id="standard-number"
                 label="Age"
-                value={age || undefined}
-                onChange={async () => {
-                  const filteredAreas = ((await this.getFilters({
-                    age: age || undefined,
-                  })) as any).result;
-
-                  const polygons = filteredAreas.map((x) => {
-                    const coordinates = [
-                      { lat: x.min_lat, lng: x.min_lon },
-                      { lat: x.min_lat, lng: x.max_lon },
-                      { lat: x.min_lon, lng: x.min_lat },
-                      { lat: x.min_lon, lng: x.max_lat },
-                    ];
-                    return new this.state.googleMap.maps.Polygon({
-                      map: this.state.googleMap.map,
-                      paths: coordinates,
-                      strokeColor: '#0000FF',
-                      strokeOpacity: 0.8,
-                      strokeWeight: 2,
-                      fillColor: '#0000FF',
-                      fillOpacity: 0.35,
-                      draggable: true,
-                      editable: true,
-                      geodesic: false,
-                    });
+                value={age || ''}
+                onChange={(event) => {
+                  this.setState({
+                    age: event.target.value as any,
                   });
-                  this.setState({ age, frames: polygons });
+                  this.updatePolygons({ age: event.target.value as any });
+                }}
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                margin="normal"
+              />
+            </ExpansionPanelDetails>
+            <ExpansionPanelDetails>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Gender</FormLabel>
+                <RadioGroup
+                  aria-label="Gender"
+                  name="gender"
+                  value={gender || undefined}
+                  onChange={(event) => {
+                    this.setState({
+                      gender: (event.target as any).value as any,
+                    });
+                    this.updatePolygons({
+                      gender: (event.target as any).value,
+                    });
+                  }}
+                >
+                  <FormControlLabel
+                    value="Female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="Male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="Other"
+                    control={<Radio />}
+                    label="Other"
+                  />
+                  <FormControlLabel
+                    value="Any"
+                    control={<Radio />}
+                    label="Any"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </ExpansionPanelDetails>
+            <ExpansionPanelDetails>
+              <TextField
+                id="standard-number"
+                label="Income"
+                value={income || ''}
+                onChange={(event) => {
+                  this.setState({
+                    income: event.target.value as any,
+                  });
+                  this.updatePolygons({ income: event.target.value as any });
                 }}
                 type="number"
                 InputLabelProps={{
@@ -196,18 +254,18 @@ class GraphPage extends React.Component<Props, State> {
               }}
               defaultZoom={this.props.zoom}
             >
-              {dataPoints.map((x) => (
+              {/* {dataPoints.map((x) => (
                 <CoffeeIconButton
                   key={`${x.lat}_${x.lng}`}
                   lat={x.lat}
                   lng={x.lng}
                 />
-              ))}
+              ))} */}
               <LocationMarker lat={lat} lng={lng} />
             </GoogleMapReact>
           </div>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={6}>
           <div
             style={{ height: '85vh', marginLeft: '1em', marginRight: '1em' }}
           >
@@ -246,6 +304,49 @@ class GraphPage extends React.Component<Props, State> {
         </Grid>
       </Grid>
     );
+  }
+  public async updatePolygons(params: FilterParam) {
+    const filteredAreas: AggregateData[] = ((await this.getFilters({
+      age: params.age || this.state.age || undefined,
+      gender: params.gender || (this.state.gender as any) || undefined,
+      income: params.income || (this.state.income as any) || undefined,
+    })) as any).result;
+
+    const { frames } = this.state;
+    frames.forEach((x) => x.setMap(null));
+    const polygons = filteredAreas.map((x) => {
+      const coordinates = [
+        { lat: x.min_lat, lng: x.min_lon },
+        { lat: x.max_lat, lng: x.min_lon },
+        { lat: x.max_lat, lng: x.max_lon },
+        { lat: x.min_lat, lng: x.max_lon },
+      ];
+      let color = '#FEE744';
+      if (x.Wednesday.noon > 1000) {
+        color = '#FFBE37';
+      }
+      if (x.Wednesday.noon < 500) {
+        color = '#6144FE';
+      }
+      if (x.Wednesday.noon > 2000) {
+        color = '#CB227E';
+      }
+      return new this.state.googleMap.maps.Polygon({
+        map: this.state.googleMap.map,
+        paths: coordinates,
+        strokeColor: color,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: color,
+        fillOpacity: 0.25,
+        draggable: false,
+        editable: false,
+        geodesic: false,
+      });
+    });
+    this.setState({
+      frames: polygons,
+    });
   }
 }
 

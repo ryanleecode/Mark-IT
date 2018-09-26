@@ -43,7 +43,104 @@ class Header extends React.Component<Props> {
             xs={10}
             style={{ display: 'flex', justifyContent: 'space-between' }}
           >
-            <div />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <img
+                src={'logo.png'}
+                style={{ backgroundSize: 'contain', maxHeight: '4em' }}
+              />
+              <div style={{ width: '1em' }} />
+              <Typography
+                style={{ display: 'flex', alignItems: 'center' }}
+                variant="title"
+              >
+                MarkITplace (Coffee and Foodchains)
+              </Typography>
+              <img
+                src={'coffee_cup_icon.svg'}
+                style={{ backgroundSize: 'contain', maxHeight: '4em' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subheading" style={{ paddingRight: '1em' }}>
+                Low Density
+              </Typography>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingRight: '1em',
+                }}
+              >
+                <svg height="24" width="24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="24"
+                    stroke="#6144FE"
+                    stroke-width="3"
+                    fill="#6144FE"
+                  />
+                </svg>
+              </div>
+              <Typography variant="subheading" style={{ paddingRight: '1em' }}>
+                Medium Density
+              </Typography>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingRight: '1em',
+                }}
+              >
+                <svg height="24" width="24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="24"
+                    stroke="#FEE744"
+                    stroke-width="3"
+                    fill="#FEE744"
+                  />
+                </svg>
+              </div>
+              <Typography variant="subheading" style={{ paddingRight: '1em' }}>
+                High Density
+              </Typography>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingRight: '1em',
+                }}
+              >
+                <svg height="24" width="24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="24"
+                    stroke="#FFBE37"
+                    stroke-width="3"
+                    fill="#FFBE37"
+                  />
+                </svg>
+              </div>
+              <Typography variant="subheading" style={{ paddingRight: '1em' }}>
+                Concentrated Density
+              </Typography>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <svg height="24" width="24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="24"
+                    stroke="#CB227E"
+                    stroke-width="3"
+                    fill="#CB227E"
+                  />
+                </svg>
+              </div>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Link className={classes.link} to="/">
                 <Typography

@@ -29,8 +29,8 @@ class TransactionGraph extends React.Component<Props> {
         yScale={{
           type: 'linear',
           stacked: true,
-          min: 'auto',
-          max: 'auto',
+          min: '0',
+          max: '5000',
         }}
         minY="auto"
         maxY="auto"

@@ -19,7 +19,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/elevatehackathon-20180921235941-deployment/amplify-cfn-templates/auth/cognito67d3fa30-cloudformation-template.yml",
 				"logicalId": "authcognito67d3fa30"
 			},
-			"lastPushTimeStamp": "2018-09-22T04:03:02.550Z",
+			"lastPushTimeStamp": "2018-09-23T08:50:48.684Z",
 			"output": {
 				"AppClientSecret": "1q6ojlrd1icvh08gffcgvci69uk3u0efmvn88ibilqlslsc21ffd",
 				"UserPoolId": "us-east-2_e7FYzcN0B",
@@ -30,6 +30,24 @@
 				"UserPoolName": "cognito67d3fa30_userpool_67d3fa30"
 			},
 			"lastPushDirHash": "Fz9DRvISxBKTcXVwLbd1wFYQ2BY="
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/elevatehackathon-20180921235941-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-09-23T08:50:48.689Z",
+			"output": {
+				"S3BucketSecureURL": "https://wingman-elevate.s3.amazonaws.com",
+				"WebsiteURL": "http://wingman-elevate.s3-website.us-east-2.amazonaws.com",
+				"Region": "us-east-2",
+				"HostingBucketName": "wingman-elevate"
+			},
+			"lastPushDirHash": "GZ9kgG5IYpgLjr/oCYrR4JPBAE8="
 		}
 	}
 }

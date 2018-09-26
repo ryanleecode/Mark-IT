@@ -22,7 +22,8 @@ import { pxToEm } from '../util';
 const styles = ({ spacing, breakpoints, palette }: Theme) =>
   createStyles({
     background: {
-      padding: '9.375em',
+      width: '100vh',
+      height: '70vh',
       backgroundImage: 'url(home_background.jpeg)',
       backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',

@@ -2,6 +2,7 @@ import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 import HtmlWebpackPlugin = require('html-webpack-plugin');
 import MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import CopyWebpackPlugin = require('copy-webpack-plugin');
 import * as path from 'path';
 import * as webpack from 'webpack';
 import merge = require('webpack-merge');
@@ -26,6 +27,7 @@ const commonConfig: webpack.Configuration = {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: '[name].bundle.js',
+    pathinfo: false,
   },
   devtool: 'eval',
   resolve: {
@@ -72,6 +74,8 @@ const commonConfig: webpack.Configuration = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/app/index.html'),
     }),
+    new webpack.DefinePlugin(envKeys),
+    new CopyWebpackPlugin([{ from: 'public' }]),
     new MiniCssExtractPlugin(),
   ],
 };
@@ -91,7 +95,6 @@ const devConfig = merge(commonConfig, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin(envKeys),
     new HardSourceWebpackPlugin(),
   ],
 });
