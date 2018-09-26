@@ -12,25 +12,24 @@
 		}
 	},
 	"auth": {
-		"cognito67d3fa30": {
+		"cognito6e26a70c": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/elevatehackathon-20180921235941-deployment/amplify-cfn-templates/auth/cognito67d3fa30-cloudformation-template.yml",
-				"logicalId": "authcognito67d3fa30"
+				"s3TemplateURL": "https://s3.amazonaws.com/elevatehackathon-20180921235941-deployment/amplify-cfn-templates/auth/cognito6e26a70c-cloudformation-template.yml",
+				"logicalId": "authcognito6e26a70c"
 			},
-			"lastPushTimeStamp": "2018-09-26T11:51:19.320Z",
+			"lastPushTimeStamp": "2018-09-26T12:10:47.180Z",
 			"output": {
-				"AppClientSecret": "1q6ojlrd1icvh08gffcgvci69uk3u0efmvn88ibilqlslsc21ffd",
-				"UserPoolId": "us-east-2_e7FYzcN0B",
-				"AppClientIDWeb": "6cif2t0iag0l74e3k5ttc7ol49",
-				"AppClientID": "2ejb5stdhea4t4kk72p5qcokad",
-				"IdentityPoolId": "us-east-2:687a07eb-f8fd-4ac1-9dae-5046959efb9c",
-				"IdentityPoolName": "cognito67d3fa30_identitypool_67d3fa30",
-				"UserPoolName": "cognito67d3fa30_userpool_67d3fa30"
+				"AppClientSecret": "22bph4cr71dslvnrilhgpuf3vupc6roihjmrbu3l2mcgbfprhcl",
+				"UserPoolId": "us-east-2_ILVi57O70",
+				"AppClientIDWeb": "c2a5tgogssun954l4dqgg362b",
+				"AppClientID": "28k2ngtov4l4jo3r70146b1q4d",
+				"IdentityPoolId": "us-east-2:8e83a6c1-0a33-4657-b7e4-6bb9c333981a",
+				"IdentityPoolName": "cognito6e26a70c_identitypool_6e26a70c",
+				"UserPoolName": "cognito6e26a70c_userpool_6e26a70c"
 			},
-			"lastPushDirHash": "HR6q3mCm79+T78eZ/X/EdjQ6Rao=",
-			"[object Object]": {}
+			"lastPushDirHash": "D/ey1+t9zYLnU+uK5J6VoN10JMU="
 		}
 	},
 	"hosting": {
@@ -41,7 +40,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/elevatehackathon-20180921235941-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
 			},
-			"lastPushTimeStamp": "2018-09-26T11:51:19.318Z",
+			"lastPushTimeStamp": "2018-09-26T12:10:47.178Z",
 			"output": {
 				"S3BucketSecureURL": "https://wingman-elevate.s3.amazonaws.com",
 				"WebsiteURL": "http://wingman-elevate.s3-website.us-east-2.amazonaws.com",

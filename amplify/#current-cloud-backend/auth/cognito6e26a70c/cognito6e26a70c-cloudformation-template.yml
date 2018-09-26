@@ -2,10 +2,28 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
     
-  resourceName:
+  identityPoolName:
+    Type: String
+              
+  allowUnauthenticatedIdentities:
     Type: String
             
-  authSelections:
+  thirdPartyAuth:
+    Type: String
+          
+  lambdaLogPolicy:
+    Type: String
+            
+  openIdLambdaRoleName:
+    Type: String
+            
+  openIdRolePolicy:
+    Type: String
+            
+  openIdLambdaIAMPolicy:
+    Type: String
+            
+  openIdLogPolicy:
     Type: String
             
   userPoolName:
@@ -89,30 +107,6 @@ Parameters:
   userpoolClientSetAttributes:
     Type: String
           
-  identityPoolName:
-    Type: String
-              
-  allowUnauthenticatedIdentities:
-    Type: String
-            
-  thirdPartyAuth:
-    Type: String
-          
-  lambdaLogPolicy:
-    Type: String
-            
-  openIdLambdaRoleName:
-    Type: String
-            
-  openIdRolePolicy:
-    Type: String
-            
-  openIdLambdaIAMPolicy:
-    Type: String
-            
-  openIdLogPolicy:
-    Type: String
-            
   useDefault:
     Type: String
             
@@ -126,6 +120,12 @@ Parameters:
     Type: String
             
   authRoleArn:
+    Type: String
+            
+  resourceName:
+    Type: String
+            
+  authSelections:
     Type: String
           
 Resources:
@@ -198,7 +198,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: cognito67d3fa30_app_clientWeb
+      ClientName: cognito6e26a70c_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -325,7 +325,7 @@ Resources:
   # Always created
     Type: AWS::Cognito::IdentityPool
     Properties: 
-      IdentityPoolName: cognito67d3fa30_identitypool_67d3fa30
+      IdentityPoolName: cognito6e26a70c_identitypool_6e26a70c
       
       CognitoIdentityProviders:
         - ClientId:  !Ref UserPoolClient
