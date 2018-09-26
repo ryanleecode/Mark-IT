@@ -8,7 +8,7 @@
     "dev-server": "nodemon",
     "server": "ts-node ./src/api/server.ts",
     "build": "webpack -p",
-    "start": "cross-env DEBUG=info run-s server",
+    "start": "cross-env DEBUG=info NODE_ENV=production npm run server",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

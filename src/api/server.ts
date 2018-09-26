@@ -38,14 +38,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.static('public'));
+app.use(express.static(publicPath!));
 
 if (process.env.NODE_ENV === 'development') {
   app.get('*', (req, res) => res.sendFile(path.resolve(publicPath!)));
 } else {
   app.get('/*', (req, res) => {
-    app.use(express.static(outputPath!));
-    res.sendFile(path.resolve(publicPath!));
-    // res.sendFile(path.resolve(outputPath!, 'index.html'));
+    // res.sendFile(path.resolve(publicPath!, ));
+    res.sendFile(path.resolve(outputPath!, 'index.html'));
   });
 }
 

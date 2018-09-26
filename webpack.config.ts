@@ -19,6 +19,7 @@ const envKeys = Object.keys(env as any).reduce((prev, next) => {
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const commonConfig: webpack.Configuration = {
+  mode: 'production',
   entry: {
     app: [path.join(__dirname, 'src/app/index.tsx')],
     vendor: ['react', 'react-dom', 'mobx', 'mobx-react'],
@@ -75,7 +76,6 @@ const commonConfig: webpack.Configuration = {
       template: path.join(__dirname, 'src/app/index.html'),
     }),
     new webpack.DefinePlugin(envKeys),
-    new CopyWebpackPlugin([{ from: 'public' }]),
     new MiniCssExtractPlugin(),
   ],
 };
