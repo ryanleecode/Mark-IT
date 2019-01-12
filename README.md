@@ -10,7 +10,7 @@ The application was built during the [Elevate Hackathon](https://elevatetechfest
 
 ## Demo
 
-Try it out [here](http://ec2-18-220-118-99.us-east-2.compute.amazonaws.com/). Just click around and using the filter tab.
+Try it out [here](ec2-18-224-19-39.us-east-2.compute.amazonaws.com). Just click around and using the filter tab.
 
 You can sign up for an account or use the following credentials.
 
